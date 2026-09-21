@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nebo-ocr"
+version = "0.1.0"
+description = "Handwriting recognition for MyScript Nebo .nebo files — parse ink.bink strokes and run them through cloud or local OCR engines in 100+ languages."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "nebo-ocr contributors" }]
+keywords = ["nebo", "myscript", "handwriting", "ocr", "ink", "bink", "iink"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+dependencies = [
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+surya = ["surya-ocr>=0.6"]
+easyocr = ["easyocr>=1.7"]
+paddleocr = ["paddleocr>=2.7", "paddlepaddle>=2.5"]
+trocr = ["transformers>=4.40", "torch>=2.0"]
+all = [
+    "surya-ocr>=0.6",
+    "easyocr>=1.7",
+    "paddleocr>=2.7",
+    "paddlepaddle>=2.5",
+    "transformers>=4.40",
+    "torch>=2.0",
+]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.8",
+    "ruff>=0.4",
+    "build>=1.0",
+    "types-Pillow",
+]
+
+[project.scripts]
+nebo-ocr = "nebo_ocr.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/tkgo11/nebo-ocr"
+Issues = "https://github.com/tkgo11/nebo-ocr/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+mypy_path = "src"
+python_version = "3.10"
+strict = true
+warn_return_any = true
+
+[[tool.mypy.overrides]]
+module = ["PIL.*", "easyocr.*", "easyocr", "paddleocr.*", "paddleocr", "surya.*",
+          "surya", "transformers.*", "transformers", "torch.*", "torch", "cv2.*",
+          "numpy.*", "numpy"]
+ignore_missing_imports = true
